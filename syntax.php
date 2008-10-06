@@ -1,6 +1,6 @@
 <?php
 /**
- * Syntax Plugin: 
+ * Syntax Plugin:
  * This plugin lists all users from the given groups in a tabel.
  * Syntax:
  * {{groupusers:<group1>[,group2[,group3...]]}}
@@ -22,7 +22,7 @@ class syntax_plugin_groupusers extends DokuWiki_Syntax_Plugin {
         return array(
             'author' => 'Dominik Eckelmann',
             'email'  => 'dokuwiki@cosmocode.de',
-            'date'   => '2008-09-12',
+            'date'   => '2008-10-06',
             'name'   => 'Groupusers Syntax plugin',
             'desc'   => 'Displays the users from one or more groups.',
             'url'    => 'http://www.dokuwiki.org/plugin:groupusers'
@@ -35,7 +35,7 @@ class syntax_plugin_groupusers extends DokuWiki_Syntax_Plugin {
     function getType(){
         return 'substition';
     }
-   
+
     /**
      * What about paragraphs?
      */
@@ -45,18 +45,21 @@ class syntax_plugin_groupusers extends DokuWiki_Syntax_Plugin {
 
     /**
      * Where to sort in?
-     */ 
+     */
     function getSort(){
         return 160;
     }
 
-    function connectTo($mode) { $this->Lexer->addSpecialPattern('\{\{groupusers\>[^}]*\}\}',$mode,'plugin_groupusers'); }
+    function connectTo($mode) {
+         $this->Lexer->addSpecialPattern('\{\{groupusers\>[^}]*\}\}',$mode,'plugin_groupusers');
+    }
+
     function handle($match, $state, $pos, &$handler){
         $match = substr($match,13,-2);
         $match = explode(',',$match);
         return array($match, $state, $pos);
     }
-    
+
     function render($mode, &$renderer, $data) {
         global $auth;
         global $lang;
@@ -64,7 +67,7 @@ class syntax_plugin_groupusers extends DokuWiki_Syntax_Plugin {
         if($mode == 'xhtml'){
             $users = array();
             foreach ($data[0] as $grp) {
-                $getuser = $auth->retrieveUsers(0,-1,array('grps'=>$grp));
+                $getuser = $auth->retrieveUsers(0,-1,array('grps'=>'^'.preg_quote($grp,'/').'$'));
                 $users = array_merge($users,$getuser);
             }
             $renderer->doc .= '<table class="inline">';
