@@ -55,7 +55,7 @@ class syntax_plugin_groupusers extends DokuWiki_Syntax_Plugin {
          $this->Lexer->addSpecialPattern('\{\{groupusers\|nomail\>[^}]*?\}\}',$mode,'plugin_groupusers');
     }
 
-    function handle($match, $state, $pos, &$handler){
+    function handle($match, $state, $pos, Doku_Handler $handler){
         $match = substr($match,13,-2);
         $data = array(null, $state, $pos);
 		if (substr($match, 0, 7) == 'nomail>') 
@@ -70,7 +70,7 @@ class syntax_plugin_groupusers extends DokuWiki_Syntax_Plugin {
 		return $data;
     }
 
-    function render($mode, &$renderer, $data) {
+    function render($mode, Doku_Renderer $renderer, $data) {
         global $auth;
         global $lang;
 
