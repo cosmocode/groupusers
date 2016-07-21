@@ -1,7 +1,7 @@
 base    groupusers
 author  Dominik Eckelmann
 email   dokuwiki@cosmocode.de
-date    2016-02-03
+date    2016-07-06
 name    Groupusers Syntax plugin
 desc    Displays the users from one or more groups.
 url     http://www.dokuwiki.org/plugin:groupusers
